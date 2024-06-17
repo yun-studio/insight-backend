@@ -13,7 +13,7 @@ public record UserDetailsImpl(User user, Map<String, Object> attributes) impleme
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getNickname();
     }
 
     @Override
