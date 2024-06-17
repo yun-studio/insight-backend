@@ -24,7 +24,7 @@ public class User extends SoftDeleteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nickname", nullable = false, length = 20)
+    @Column(name = "nickname", nullable = false, unique = true, length = 25) // 구글 이름 최대 글자는 25
     private String nickname;
 
     @Column(name = "email", nullable = false, unique = true, length = 100)
