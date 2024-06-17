@@ -44,8 +44,11 @@ public class User extends SoftDeleteEntity {
     @Column(name = "provider_id")
     private String providerId;
 
+    @Column(name = "profile_url")
+    private String profileUrl;
+
     @Builder
-    private User(String nickname, String email, String password, OAuthProvider provider, String providerId) {
+    private User(String nickname, String email, String password, OAuthProvider provider, String providerId, String profileUrl) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
