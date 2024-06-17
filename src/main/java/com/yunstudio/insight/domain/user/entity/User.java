@@ -55,5 +55,6 @@ public class User extends SoftDeleteEntity {
         this.role = UserRole.USER;
         this.provider = provider;
         this.providerId = providerId;
+        this.profileUrl = profileUrl;
     }
 }
