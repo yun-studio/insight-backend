@@ -25,8 +25,8 @@ public class JwtUtil {
     public static final String REFRESH_TOKEN_HEADER = "Refresh-Token"; // Refresh Token Header KEY 값
     public static final String AUTHORIZATION_KEY = "auth"; // JWT 내의 사용자 권한 값의 KEY
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
-    public static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // Access token 만료시간 60분
-    public static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // Refresh token 만료시간 2주
+    public static final int ACCESS_TOKEN_TTL_SECONDS = 60 * 60; // Access token 만료시간 60분, 초 단위
+    public static final int REFRESH_TOKEN_TTL_SECONDS = 14 * 24 * 60 * 60; // Refresh token 만료시간 2주, 초 단위
 
     @Value("${jwt.secret.key}")
     private String JWT_SECRET_KEY; // JWT 생성 및 검증에 사용할 비밀키 (Base 64로 Encode)
@@ -44,14 +44,14 @@ public class JwtUtil {
      * Access Token 생성
      */
     public String createAccessToken(String nickname, String role) {
-        return createToken(nickname, role, ACCESS_TOKEN_TIME);
+        return createToken(nickname, role, ACCESS_TOKEN_TTL_SECONDS * 1000L);
     }
 
     /**
      * Refresh Token 생성
      */
     public String createRefreshToken(String nickname, String role) {
-        return createToken(nickname, role, REFRESH_TOKEN_TIME);
+        return createToken(nickname, role, REFRESH_TOKEN_TTL_SECONDS * 1000L);
     }
 
     private String createToken(String nickname, String role, long expiration) {
