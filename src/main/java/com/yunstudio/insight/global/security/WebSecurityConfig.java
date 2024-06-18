@@ -1,6 +1,7 @@
 package com.yunstudio.insight.global.security;
 
 import com.yunstudio.insight.domain.user.service.GoogleOAuth2UserService;
+import com.yunstudio.insight.global.exception.ExceptionHandlerFilter;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -19,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -40,6 +42,11 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
+        return new ExceptionHandlerFilter();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // CSRF 설정
@@ -53,6 +60,9 @@ public class WebSecurityConfig {
 
         // OAuth2 Login 설정
         http.oauth2Login(getoAuth2LoginConfigurerCustomizer());
+
+        // Filter 순서 설정
+        settingFilterOrder(http);
 
         // 요청 URL 접근 설정
         settingRequestAuthorization(http);
@@ -80,8 +90,14 @@ public class WebSecurityConfig {
     private Customizer<OAuth2LoginConfigurer<HttpSecurity>> getoAuth2LoginConfigurerCustomizer() {
         return oAuth2LoginConfig -> oAuth2LoginConfig
             .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(googleOAuth2UserService))
-            .successHandler(oAuth2SuccessHandler)
-            ;
+            .successHandler(oAuth2SuccessHandler);
+    }
+
+    /**
+     * Filter 설정
+     */
+    private void settingFilterOrder(HttpSecurity http) {
+        http.addFilterBefore(exceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
