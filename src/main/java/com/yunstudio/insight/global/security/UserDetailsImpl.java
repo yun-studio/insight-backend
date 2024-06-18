@@ -5,11 +5,25 @@ import com.yunstudio.insight.domain.user.entity.UserRole;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-public record UserDetailsImpl(User user, Map<String, Object> attributes) implements UserDetails, OAuth2User {
+@Getter
+public class UserDetailsImpl implements UserDetails, OAuth2User {
+
+    private final User user;
+    private Map<String, Object> attributes;
+
+    public UserDetailsImpl(User user) {
+        this.user = user;
+    }
+
+    public UserDetailsImpl(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     @Override
     public String getUsername() {
