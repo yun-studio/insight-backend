@@ -9,6 +9,8 @@ import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -114,13 +116,38 @@ public class JwtUtil {
     }
 
     /**
+     * 쿠키에서 Access token 가져오기
+     */
+    public String getAccessTokenFromCookies(Cookie[] cookies) {
+        return getTokenFromCookies(cookies, ACCESS_TOKEN_HEADER);
+    }
+
+    /**
+     * 쿠키에서 Refresh token 가져오기
+     */
+    public String getRefreshTokenFromCookies(Cookie[] cookies) {
+        return getTokenFromCookies(cookies, REFRESH_TOKEN_HEADER);
+    }
+
+    private String getTokenFromCookies(Cookie[] cookies, String cookieName) {
+        if (cookies == null) {
+            return null;
+        }
+
+        return Arrays.stream(cookies)
+            .filter(cookie -> cookie.getName().equals(cookieName))
+            .map(Cookie::getValue)
+            .findAny()
+            .orElse(null);
+    }
+
+    /**
      * 토큰 검증
      */
     public JwtStatus validateToken(String token) {
 
         try {
             jwtParser.parseSignedClaims(token);
-
             return JwtStatus.VALID;
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT token, 만료된 JWT token 입니다.");
