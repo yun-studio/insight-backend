@@ -121,7 +121,7 @@ public class JwtUtil {
         try {
             jwtParser.parseSignedClaims(token);
 
-            return JwtStatus.ACCESS;
+            return JwtStatus.VALID;
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT token, 만료된 JWT token 입니다.");
             return JwtStatus.EXPIRED;
@@ -133,6 +133,6 @@ public class JwtUtil {
             log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }
 
-        return JwtStatus.DENIED;
+        return JwtStatus.INVALID;
     }
 }
