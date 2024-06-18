@@ -3,6 +3,7 @@ package com.yunstudio.insight.global.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.global.jwt.JwtUtil;
+import com.yunstudio.insight.global.redis.RedisUtil;
 import com.yunstudio.insight.global.response.CommonResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -36,16 +38,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // 유저 파싱
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        User user = principal.user();
+        User user = principal.getUser();
 
-        // 응답 쿠키에 JWT 추가
-        addTokensInCookie(response, user);
-
-        // 응답 바디에 성공 응답 객체 추가
-        settingResponseBody(response);
-    }
-
-    private void addTokensInCookie(HttpServletResponse response, User user) {
         // JWT 생성
         String accessToken = jwtUtil.createAccessToken(user.getNickname(), user.getRole().getAuthority());
         String refreshToken = jwtUtil.createRefreshToken(user.getNickname(), user.getRole().getAuthority());
@@ -57,6 +51,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // 응답 쿠키에 JWT 추가
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
+
+        // 레디스에 리프레쉬 토큰 저장
+        redisUtil.setUserLogin(user.getNickname(), refreshToken);
+
+        // 응답 바디에 성공 응답 객체 추가
+        settingResponseBody(response);
     }
 
     private Cookie createCookie(String cookieName, String cookieValue, int maxAge) {
