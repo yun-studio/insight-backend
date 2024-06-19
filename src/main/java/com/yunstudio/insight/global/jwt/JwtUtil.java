@@ -69,6 +69,19 @@ public class JwtUtil {
     }
 
     /**
+     * Refresh token 담은 쿠키 생성
+     */
+    public Cookie createRefreshTokenCookie(String cookieValue) {
+        Cookie cookie = new Cookie(JwtUtil.REFRESH_TOKEN_HEADER, cookieValue);
+
+        cookie.setMaxAge(JwtUtil.REFRESH_TOKEN_TTL_SECONDS);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        return cookie;
+    }
+
+    /**
      * Bearer prefix 없는 토큰 가져오기
      */
     public String getTokenWithoutBearer(String token) {
