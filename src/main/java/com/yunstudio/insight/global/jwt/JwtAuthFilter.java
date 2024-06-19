@@ -101,7 +101,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String newRefreshToken = jwtUtil.createRefreshToken(nickname, role);
 
         // Refresh token 담은 쿠키 생성
-        Cookie refreshTokenCookie = createCookie(JwtUtil.REFRESH_TOKEN_HEADER, newRefreshToken, JwtUtil.REFRESH_TOKEN_TTL_SECONDS);
+        Cookie refreshTokenCookie = jwtUtil.createRefreshTokenCookie(newRefreshToken);
+
+        // 레디스에 새로 발급한 Refresh token 저장
+        redisUtil.setUserLogin(nickname, newRefreshToken);
 
         // 응답 객체에 담기
         response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, jwtUtil.setTokenWithBearer(newAccessToken));
@@ -125,15 +128,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(String loginId) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-    }
-
-    private Cookie createCookie(String cookieName, String cookieValue, int maxAge) {
-        Cookie cookie = new Cookie(cookieName, cookieValue);
-
-        cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-
-        return cookie;
     }
 }

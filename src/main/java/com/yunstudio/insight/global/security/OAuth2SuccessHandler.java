@@ -60,16 +60,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         settingResponseBody(response);
     }
 
-    private Cookie createCookie(String cookieName, String cookieValue, int maxAge) {
-        Cookie cookie = new Cookie(cookieName, cookieValue);
-
-        cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-
-        return cookie;
-    }
-
     private void settingResponseBody(HttpServletResponse response) throws IOException {
         // 바디 설정 추가
         response.setContentType(MediaType.APPLICATION_JSON_VALUE); // Content-Type : application/json
