@@ -2,6 +2,7 @@ package com.yunstudio.insight.global.security;
 
 import com.yunstudio.insight.domain.user.service.GoogleOAuth2UserService;
 import com.yunstudio.insight.global.exception.ExceptionHandlerFilter;
+import com.yunstudio.insight.global.jwt.JwtUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -30,6 +33,8 @@ public class WebSecurityConfig {
 
     private final GoogleOAuth2UserService googleOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final LogoutHandler logoutHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -114,5 +119,18 @@ public class WebSecurityConfig {
                 // 그 외
                 .anyRequest().authenticated()
         );
+    }
+
+    /**
+     * 로그아웃 설정 기본 로그아웃 핸들러가 SecurityContext 초기화, 쿠키 제거 진행
+     */
+    private void settingLogout(HttpSecurity http) throws Exception {
+        http.logout(
+            logout -> {
+                logout.logoutUrl("/users/logout");
+                logout.addLogoutHandler(logoutHandler);
+                logout.deleteCookies(JwtUtil.REFRESH_TOKEN_HEADER); // 지정된 쿠키 삭제
+                logout.logoutSuccessHandler(logoutSuccessHandler);
+            });
     }
 }
