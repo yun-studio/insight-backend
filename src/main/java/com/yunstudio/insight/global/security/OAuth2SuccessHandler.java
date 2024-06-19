@@ -44,12 +44,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtUtil.createAccessToken(user.getNickname(), user.getRole().getAuthority());
         String refreshToken = jwtUtil.createRefreshToken(user.getNickname(), user.getRole().getAuthority());
 
-        // JWT 담은 쿠키 생성
-        Cookie accessTokenCookie = createCookie(JwtUtil.ACCESS_TOKEN_HEADER, accessToken, JwtUtil.ACCESS_TOKEN_TTL_SECONDS);
-        Cookie refreshTokenCookie = createCookie(JwtUtil.REFRESH_TOKEN_HEADER, refreshToken, JwtUtil.REFRESH_TOKEN_TTL_SECONDS);
+        // 응답 헤더에 Access token 추가
+        response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, accessToken);
 
-        // 응답 쿠키에 JWT 추가
-        response.addCookie(accessTokenCookie);
+        // 응답 쿠키에 Refresh token 추가
+        Cookie refreshTokenCookie = createCookie(JwtUtil.REFRESH_TOKEN_HEADER, refreshToken, JwtUtil.REFRESH_TOKEN_TTL_SECONDS);
         response.addCookie(refreshTokenCookie);
 
         // 레디스에 리프레쉬 토큰 저장
