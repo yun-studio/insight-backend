@@ -2,7 +2,9 @@ package com.yunstudio.insight.global.security;
 
 import com.yunstudio.insight.domain.user.service.GoogleOAuth2UserService;
 import com.yunstudio.insight.global.exception.ExceptionHandlerFilter;
+import com.yunstudio.insight.global.jwt.JwtAuthFilter;
 import com.yunstudio.insight.global.jwt.JwtUtil;
+import com.yunstudio.insight.global.redis.RedisUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -18,10 +20,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -31,6 +35,9 @@ import org.springframework.web.cors.CorsConfiguration;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
+    private final UserDetailsService userDetailsService;
     private final GoogleOAuth2UserService googleOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final LogoutHandler logoutHandler;
@@ -49,6 +56,11 @@ public class WebSecurityConfig {
     @Bean
     public ExceptionHandlerFilter exceptionHandlerFilter() {
         return new ExceptionHandlerFilter();
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter(jwtUtil, redisUtil, userDetailsService);
     }
 
     @Bean
@@ -105,7 +117,8 @@ public class WebSecurityConfig {
      * Filter 설정
      */
     private void settingFilterOrder(HttpSecurity http) {
-        http.addFilterBefore(exceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
     }
 
     /**
