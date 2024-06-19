@@ -102,6 +102,18 @@ public class JwtUtil {
     }
 
     /**
+     * 토큰에서 남은 시간을 초 단위로 가져오기
+     */
+    public int getTtlInSecondsFromToken(String token) {
+        Date expiration = getUserInfoFromToken(token).getExpiration();
+
+        int expirationTimeInSeconds = (int) (expiration.getTime() / 1000);
+        int nowTimeInSeconds = (int) (new Date().getTime() / 1000);
+
+        return expirationTimeInSeconds - nowTimeInSeconds;
+    }
+
+    /**
      * 토큰에서 role 가져오기
      */
     public String getRoleFromToken(String token) {
