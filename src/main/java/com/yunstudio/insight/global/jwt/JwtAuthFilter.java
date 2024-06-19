@@ -93,6 +93,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * 재발급한 토큰들을 추가 후 인증 처리
      */
     private void setAuthWithRenewAccessToken(HttpServletResponse response, String refreshToken) {
+
+        // 요청 리프레쉬 토큰과 레디스의 리프레쉬 토큰이 같은지 검증
+        validateSameRefreshToken(refreshToken);
+
         String nickname = jwtUtil.getNicknameFromToken(refreshToken);
         String role = jwtUtil.getRoleFromToken(refreshToken);
 
@@ -112,6 +116,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // 인증 처리
         setAuthentication(refreshToken);
+    }
+
+    private void validateSameRefreshToken(String refreshToken) {
+
+        String nickname = jwtUtil.getNicknameFromToken(refreshToken);
+        boolean isRefreshTokenSame = redisUtil.matchesRefreshToken(nickname, refreshToken);
+
+        if (!isRefreshTokenSame) {
+            log.error("[서로 다른 리프레쉬 토큰] 닉네임 : {}", nickname);
+            redisUtil.setUserLogout(nickname);
+            throw new GlobalException(ResultCase.LOGIN_REQUIRED);
+        }
     }
 
     /**
