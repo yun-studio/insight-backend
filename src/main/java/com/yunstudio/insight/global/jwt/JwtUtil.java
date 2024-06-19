@@ -116,13 +116,6 @@ public class JwtUtil {
     }
 
     /**
-     * 쿠키에서 Access token 가져오기
-     */
-    public String getAccessTokenFromCookies(Cookie[] cookies) {
-        return getTokenFromCookies(cookies, ACCESS_TOKEN_HEADER);
-    }
-
-    /**
      * 쿠키에서 Refresh token 가져오기
      */
     public String getRefreshTokenFromCookies(Cookie[] cookies) {
