@@ -9,23 +9,30 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RedisUtil {
 
-    private final LogoutRepository logoutRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public void setLogout(String nickname, int ttl) {
-        Logout logout = Logout.builder()
+    public boolean isUserLogout(String nickname) {
+        boolean isLogin = refreshTokenRepository.existsById(nickname);
+        return !isLogin;
+    }
+
+    public void setUserLogin(String nickname, String refreshToken) {
+        RefreshToken refreshTokenItem = RefreshToken.builder()
             .nickname(nickname)
-            .ttl(ttl)
+            .refreshToken(refreshToken)
             .build();
 
-        logoutRepository.save(logout);
+        refreshTokenRepository.save(refreshTokenItem);
     }
 
-    public void setLogin(String nickname) {
-        logoutRepository.findById(nickname)
-            .ifPresent(logoutRepository::delete);
+    public void setUserLogout(String nickname) {
+        refreshTokenRepository.findById(nickname)
+            .ifPresent(refreshTokenRepository::delete);
     }
 
-    public boolean isLogout(String nickname) {
-        return logoutRepository.existsById(nickname);
+    public boolean matchesRefreshToken(String nickname, String requestRefreshToken) {
+        return refreshTokenRepository.findById(nickname)
+            .map(refreshToken -> refreshToken.getRefreshToken().equals(requestRefreshToken))
+            .orElse(false);
     }
 }
