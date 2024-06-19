@@ -61,8 +61,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * 로그아웃 여부 확인 후 인증 처리
      */
     private void authenticateLoginUser(String accessToken) {
+
+        String nickname = jwtUtil.getNicknameFromToken(accessToken);
+
         // 로그아웃 여부 체크
-        if (redisUtil.isLogout(jwtUtil.getNicknameFromToken(accessToken))) {
+        if (redisUtil.isUserLogout(nickname)) {
             throw new GlobalException(ResultCase.LOGIN_REQUIRED);
         }
 

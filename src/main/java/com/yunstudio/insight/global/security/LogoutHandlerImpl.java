@@ -44,9 +44,8 @@ public class LogoutHandlerImpl implements LogoutHandler {
 
     private void settingLogoutInRedis(String refreshToken) {
         String nickname = jwtUtil.getNicknameFromToken(refreshToken);
-        int ttl = jwtUtil.getTtlInSecondsFromToken(refreshToken);
 
-        redisUtil.setLogout(nickname, ttl);
+        redisUtil.setUserLogout(nickname);
     }
 
     private void removeRefreshTokenCookie(HttpServletResponse response) {

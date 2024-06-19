@@ -48,11 +48,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, jwtUtil.setTokenWithBearer(accessToken));
 
         // 응답 쿠키에 Refresh token 추가
-        Cookie refreshTokenCookie = createCookie(JwtUtil.REFRESH_TOKEN_HEADER, refreshToken, JwtUtil.REFRESH_TOKEN_TTL_SECONDS);
+        Cookie refreshTokenCookie = jwtUtil.createRefreshTokenCookie(refreshToken);
         response.addCookie(refreshTokenCookie);
 
-        // 레디스에 있던 로그아웃 여부 제거하여 로그인 처리
-        redisUtil.setLogin(user.getNickname());
+//        // 레디스에 있던 로그아웃 여부 제거하여 로그인 처리
+//        redisUtil.setLogin(user.getNickname());
+
+        redisUtil.setUserLogin(user.getNickname(), refreshToken);
 
         // 응답 바디에 성공 응답 객체 추가
         settingResponseBody(response);
