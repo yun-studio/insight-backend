@@ -69,6 +69,9 @@ public class WebSecurityConfig {
         // Filter 순서 설정
         settingFilterOrder(http);
 
+        // 로그아웃 설정
+        settingLogout(http);
+
         // 요청 URL 접근 설정
         settingRequestAuthorization(http);
 
