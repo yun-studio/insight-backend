@@ -121,13 +121,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private void validateSameRefreshToken(String refreshToken) {
 
         String nickname = jwtUtil.getNicknameFromToken(refreshToken);
-        boolean isRefreshTokenSame = redisUtil.matchesRefreshToken(nickname, refreshToken);
+        String refreshTokenInRedis = redisUtil.getUserRefreshToken(nickname);
 
-        if (!isRefreshTokenSame) {
+        if (isRefreshTokenNotSame(refreshToken, refreshTokenInRedis)) {
             log.error("[서로 다른 리프레쉬 토큰] 닉네임 : {}", nickname);
             redisUtil.setUserLogout(nickname);
             throw new GlobalException(ResultCase.LOGIN_REQUIRED);
         }
+    }
+
+    private boolean isRefreshTokenNotSame(String refreshToken, String refreshTokenInRedis) {
+        return StringUtils.hasText(refreshTokenInRedis) && !refreshToken.equals(refreshTokenInRedis);
     }
 
     /**

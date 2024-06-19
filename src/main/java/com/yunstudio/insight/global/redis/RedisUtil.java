@@ -30,9 +30,7 @@ public class RedisUtil {
             .ifPresent(refreshTokenRepository::delete);
     }
 
-    public boolean matchesRefreshToken(String nickname, String requestRefreshToken) {
-        return refreshTokenRepository.findById(nickname)
-            .map(refreshToken -> refreshToken.getRefreshToken().equals(requestRefreshToken))
-            .orElse(false);
+    public String getUserRefreshToken(String nickname) {
+        return refreshTokenRepository.findById(nickname).map(RefreshToken::getRefreshToken).orElse("");
     }
 }
