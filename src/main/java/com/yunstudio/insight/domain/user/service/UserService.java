@@ -2,6 +2,7 @@ package com.yunstudio.insight.domain.user.service;
 
 import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
 import com.yunstudio.insight.domain.user.dto.response.UserAnswerRes;
+import com.yunstudio.insight.domain.user.dto.response.UserDeleteRes;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.domain.user.repository.UserRepository;
 import com.yunstudio.insight.global.jwt.JwtUtil;
@@ -67,16 +68,12 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(User user, HttpServletResponse response) {
+    public UserDeleteRes deleteUser(User user) {
 
         // 소프트 딜리트
         user.softDelete();
         userRepository.save(user);
 
-        // 리프레쉬 토큰 쿠키 삭제
-        response.addCookie(new Cookie(JwtUtil.REFRESH_TOKEN_HEADER, null));
-
-        // 레디스에서 로그아웃 처리
-        redisUtil.setUserLogout(user.getNickname());
+        return new UserDeleteRes(user.getNickname());
     }
 }
