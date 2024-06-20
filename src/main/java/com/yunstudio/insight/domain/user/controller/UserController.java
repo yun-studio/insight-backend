@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +53,14 @@ public class UserController {
     ) {
 
         userService.changeNickname(user, request.nickname(), response);
+
+        return CommonResponse.success();
+    }
+
+    @DeleteMapping()
+    public CommonResponse<Object> deleteUser(@LoginUser User user, HttpServletResponse response) {
+
+        userService.deleteUser(user, response);
 
         return CommonResponse.success();
     }
