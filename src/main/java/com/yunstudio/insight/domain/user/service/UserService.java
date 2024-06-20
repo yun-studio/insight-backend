@@ -65,4 +65,18 @@ public class UserService {
         // 변경 후 닉네임으로 로그인 처리
         redisUtil.setUserLogin(newNickname, refreshToken);
     }
+
+    @Transactional
+    public void deleteUser(User user, HttpServletResponse response) {
+
+        // 소프트 딜리트
+        user.softDelete();
+        userRepository.save(user);
+
+        // 리프레쉬 토큰 쿠키 삭제
+        response.addCookie(new Cookie(JwtUtil.REFRESH_TOKEN_HEADER, null));
+
+        // 레디스에서 로그아웃 처리
+        redisUtil.setUserLogout(user.getNickname());
+    }
 }
