@@ -2,6 +2,7 @@ package com.yunstudio.insight.domain.user.controller;
 
 import com.yunstudio.insight.domain.user.dto.request.UserUpdateNicknameReq;
 import com.yunstudio.insight.domain.user.dto.response.UserAnswerRes;
+import com.yunstudio.insight.domain.user.dto.response.UserChangeNicknameRes;
 import com.yunstudio.insight.domain.user.dto.response.UserDeleteRes;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.domain.user.entity.UserRole;
@@ -47,15 +48,11 @@ public class UserController {
     }
 
     @PatchMapping("/nickname")
-    public CommonResponse<Object> changeNickname(
-        @LoginUser User user,
-        @RequestBody UserUpdateNicknameReq request,
-        HttpServletResponse response
-    ) {
+    public CommonResponse<UserChangeNicknameRes> changeNickname(@LoginUser User user, @RequestBody UserUpdateNicknameReq request) {
 
-        userService.changeNickname(user, request.nickname(), response);
+        UserChangeNicknameRes response = userService.changeNickname(user, request.nickname());
 
-        return CommonResponse.success();
+        return CommonResponse.success(response);
     }
 
     @DeleteMapping()
