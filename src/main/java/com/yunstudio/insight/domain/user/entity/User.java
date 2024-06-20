@@ -57,4 +57,8 @@ public class User extends SoftDeleteEntity {
         this.providerId = providerId;
         this.profileUrl = profileUrl;
     }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
