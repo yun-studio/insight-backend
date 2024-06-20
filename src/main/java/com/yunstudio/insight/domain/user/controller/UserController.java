@@ -2,6 +2,7 @@ package com.yunstudio.insight.domain.user.controller;
 
 import com.yunstudio.insight.domain.user.dto.request.UserUpdateNicknameReq;
 import com.yunstudio.insight.domain.user.dto.response.UserAnswerRes;
+import com.yunstudio.insight.domain.user.dto.response.UserDeleteRes;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.domain.user.entity.UserRole;
 import com.yunstudio.insight.domain.user.service.UserService;
@@ -58,10 +59,10 @@ public class UserController {
     }
 
     @DeleteMapping()
-    public CommonResponse<Object> deleteUser(@LoginUser User user, HttpServletResponse response) {
+    public CommonResponse<UserDeleteRes> deleteUser(@LoginUser User user) {
 
-        userService.deleteUser(user, response);
+        UserDeleteRes response = userService.deleteUser(user);
 
-        return CommonResponse.success();
+        return CommonResponse.success(response);
     }
 }
