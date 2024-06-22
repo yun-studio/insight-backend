@@ -22,7 +22,7 @@ public class Question extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 100)
     private String content;
 
     @Column(name = "views", nullable = false)
