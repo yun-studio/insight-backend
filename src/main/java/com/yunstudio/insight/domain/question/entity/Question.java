@@ -37,4 +37,11 @@ public class Question extends BaseEntity {
         this.views = 0L;
         this.creatorId = creatorId;
     }
+
+    /**
+     * 조회수 증가 메서드
+     */
+    public void upViews() {
+        this.views++;
+    }
 }
