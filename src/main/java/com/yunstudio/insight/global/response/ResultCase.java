@@ -35,7 +35,12 @@ public enum ResultCase {
     // 만료된 액세스 토큰 401
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, 2005, "만료된 Access Token"),
     // 만료된 리프레쉬 토큰 401
-    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 2006, "만료된 Refresh Token");
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 2006, "만료된 Refresh Token"),
+
+    // Question 3000번대
+
+    // 존재하지 않는 질문 404
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, 3000, "질문을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
