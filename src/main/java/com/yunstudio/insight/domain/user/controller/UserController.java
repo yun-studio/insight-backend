@@ -13,6 +13,7 @@ import com.yunstudio.insight.global.response.CommonResponse;
 import com.yunstudio.insight.global.security.LoginUser;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PatchMapping("/nickname")
-    public CommonResponse<UserChangeNicknameRes> changeNickname(@LoginUser User user, @RequestBody UserUpdateNicknameReq request) {
+    public CommonResponse<UserChangeNicknameRes> changeNickname(@LoginUser User user, @Valid @RequestBody UserUpdateNicknameReq request) {
 
         UserChangeNicknameRes response = userService.changeNickname(user, request.nickname());
 
