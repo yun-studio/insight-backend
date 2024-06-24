@@ -39,7 +39,7 @@ public class QuestionService {
      */
     @Transactional
     public GetQuestionRes getQuestion(Long id) {
-        Question question = questionRepository.findById(id)
+        Question question = questionRepository.findByIdWithPessimisticLock(id)
             .orElseThrow(() -> new GlobalException(ResultCase.QUESTION_NOT_FOUND));
 
         question.upViews(); // 조회수 증가
