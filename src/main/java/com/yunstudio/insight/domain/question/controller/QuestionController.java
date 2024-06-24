@@ -2,6 +2,7 @@ package com.yunstudio.insight.domain.question.controller;
 
 import com.yunstudio.insight.domain.question.dto.request.CreateQuestionReq;
 import com.yunstudio.insight.domain.question.dto.response.GetQuestionRes;
+import com.yunstudio.insight.domain.question.dto.response.GetQuestionsRes;
 import com.yunstudio.insight.domain.question.service.QuestionService;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.global.response.CommonEmptyRes;
@@ -28,11 +29,11 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping
-    public CommonResponse<List<GetQuestionRes>> getQuestions(
+    public CommonResponse<List<GetQuestionsRes>> getQuestions(
         @RequestParam(name = "query", required = false, defaultValue = "") String query
     ) {
 
-        List<GetQuestionRes> response = questionService.getQuestions(query);
+        List<GetQuestionsRes> response = questionService.getQuestions(query);
 
         return CommonResponse.success(response);
     }
