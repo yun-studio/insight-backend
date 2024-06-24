@@ -60,8 +60,7 @@ public class UserService {
     public UserDeleteRes deleteUser(User user) {
 
         // 소프트 딜리트
-        user.softDelete();
-        userRepository.save(user);
+        userRepository.delete(user);
 
         return new UserDeleteRes(user.getNickname());
     }
