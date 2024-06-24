@@ -2,6 +2,7 @@ package com.yunstudio.insight.domain.question.service;
 
 import com.yunstudio.insight.domain.question.dto.request.CreateQuestionReq;
 import com.yunstudio.insight.domain.question.dto.response.GetQuestionRes;
+import com.yunstudio.insight.domain.question.dto.response.GetQuestionsRes;
 import com.yunstudio.insight.domain.question.entity.Question;
 import com.yunstudio.insight.domain.question.mapper.QuestionMapper;
 import com.yunstudio.insight.domain.question.repository.QuestionRepository;
@@ -25,7 +26,7 @@ public class QuestionService {
      * 질문 목록 조회.
      */
     @Transactional(readOnly = true)
-    public List<GetQuestionRes> getQuestions(String query) {
+    public List<GetQuestionsRes> getQuestions(String query) {
 
         return questionRepository.findAllByQuery(query);
     }
