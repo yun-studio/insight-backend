@@ -28,7 +28,10 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public List<GetQuestionsRes> getQuestions(String query) {
 
-        return questionRepository.findAllByQuery(query);
+        return questionRepository.findAllByContentContainingIgnoreCase(query)
+            .stream()
+            .map(QuestionMapper.INSTANCE::toGetQuestionsRes)
+            .toList();
     }
 
     /**
