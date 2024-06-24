@@ -27,10 +27,7 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public List<GetQuestionRes> getQuestions(String query) {
 
-        return questionRepository.findAllByQuery(query)
-            .stream()
-            .map(QuestionMapper.INSTANCE::toGetQuestionRes)
-            .toList();
+        return questionRepository.findAllByQuery(query);
     }
 
     /**
