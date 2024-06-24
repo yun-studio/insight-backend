@@ -9,9 +9,10 @@ import com.yunstudio.insight.domain.question.repository.QuestionRepository;
 import com.yunstudio.insight.global.exception.GlobalException;
 import com.yunstudio.insight.global.response.CommonEmptyRes;
 import com.yunstudio.insight.global.response.ResultCase;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,10 @@ public class QuestionService {
      * 질문 목록 조회.
      */
     @Transactional(readOnly = true)
-    public List<GetQuestionsRes> getQuestions(String query) {
+    public Slice<GetQuestionsRes> getQuestions(String query, Pageable pageable) {
 
-        return questionRepository.findAllByContentContainingIgnoreCase(query)
-            .stream()
-            .map(QuestionMapper.INSTANCE::toGetQuestionsRes)
-            .toList();
+        return questionRepository.findAllByQueryPaging(query, pageable)
+            .map(QuestionMapper.INSTANCE::toGetQuestionsRes);
     }
 
     /**
