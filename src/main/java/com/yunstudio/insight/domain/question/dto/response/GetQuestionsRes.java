@@ -7,6 +7,7 @@ public record GetQuestionsRes(
     Long id,
     String content,
     Long views,
+    Integer answerCount,
     LocalDateTime createdAt,
     LocalDateTime modifiedAt
 ) {
