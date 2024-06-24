@@ -9,9 +9,10 @@ import com.yunstudio.insight.global.response.CommonEmptyRes;
 import com.yunstudio.insight.global.response.CommonResponse;
 import com.yunstudio.insight.global.security.LoginUser;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,11 +30,11 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping
-    public CommonResponse<List<GetQuestionsRes>> getQuestions(
-        @RequestParam(name = "query", required = false, defaultValue = "") String query
+    public CommonResponse<Slice<GetQuestionsRes>> getQuestions(
+        @RequestParam(name = "query", required = false, defaultValue = "") String query,
+        Pageable pageable
     ) {
-
-        List<GetQuestionsRes> response = questionService.getQuestions(query);
+        Slice<GetQuestionsRes> response = questionService.getQuestions(query, pageable);
 
         return CommonResponse.success(response);
     }
