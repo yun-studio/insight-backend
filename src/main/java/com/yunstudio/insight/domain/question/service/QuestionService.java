@@ -40,8 +40,9 @@ public class QuestionService {
             .orElseThrow(() -> new GlobalException(ResultCase.QUESTION_NOT_FOUND));
 
         question.upViews(); // 조회수 증가
+        Question savedQuestion = questionRepository.save(question);
 
-        return QuestionMapper.INSTANCE.toGetQuestionRes(questionRepository.save(question));
+        return QuestionMapper.INSTANCE.toGetQuestionRes(savedQuestion);
     }
 
     /**
