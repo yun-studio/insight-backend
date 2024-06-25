@@ -13,7 +13,7 @@ spring:
         #        generate_statistics: true # 쿼리수행 통계
         format_sql: true # SQL 문 정렬하여 출력
         highlight_sql: true # SQL 문 색 부여
-        default_batch_fetch_size: 10
+        default_batch_fetch_size: 1000
   security:
     oauth2:
       client:
