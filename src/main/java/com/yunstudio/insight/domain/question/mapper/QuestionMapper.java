@@ -21,14 +21,11 @@ public interface QuestionMapper {
             .map(AnswerMapper.INSTANCE::toGetAnswerRes)
             .toList();
 
-        return new GetQuestionRes(
-            question.getId(),
-            question.getContent(),
-            question.getViews(),
-            getAnswerResList,
-            question.getCreatedAt(),
-            question.getModifiedAt());
+        return toGetQuestionResWithGetAnswerResList(question, getAnswerResList);
     }
+
+    @Mapping(source = "answerList", target = "answerList")
+    GetQuestionRes toGetQuestionResWithGetAnswerResList(Question question, List<GetAnswerRes> answerList);
 
     @Mapping(expression = "java(question.getAnswerList().size())", target = "answerCount")
     GetQuestionsRes toGetQuestionsRes(Question question);
