@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public record GetAnswerRes(
     Long id,
     String content,
+    Integer likeCount,
     LocalDateTime createdAt,
     LocalDateTime modifiedAt
 ) {
