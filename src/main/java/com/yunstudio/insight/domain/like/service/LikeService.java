@@ -55,4 +55,20 @@ public class LikeService {
     private boolean isUserSameAuthor(User user, Answer answer) {
         return answer.getAuthor().getId().equals(user.getId());
     }
+
+    /**
+     * 좋아요 취소.
+     */
+    @Transactional
+    public CommonEmptyRes dislike(User user, Long answerId) {
+
+        Answer answer = answerRepository.findById(answerId)
+            .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
+
+        // 좋아요를 눌렀다면 삭제
+        likeRepository.findByUserAndAnswer(user, answer)
+            .ifPresent(likeRepository::delete);
+
+        return new CommonEmptyRes();
+    }
 }
