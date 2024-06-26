@@ -20,14 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
 
     /**
      * 답변 생성.
      */
     @Transactional
-    public CreateAnswerRes createAnswer(User user, CreateAnswerReq request) {
+    public CreateAnswerRes createAnswer(User user, Long questionId, CreateAnswerReq request) {
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new GlobalException(ResultCase.QUESTION_NOT_FOUND));
+
         Answer answer = Answer.builder()
             .author(user)
+            .question(question)
             .content(request.content())
             .build();
 
