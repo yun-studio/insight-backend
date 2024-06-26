@@ -25,7 +25,7 @@ public class LikeService {
      * 좋아요 추가
      */
     @Transactional
-    public CommonEmptyRes likeUp(User user, Long answerId) {
+    public CommonEmptyRes like(User user, Long answerId) {
 
         Answer answer = answerRepository.findById(answerId)
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));

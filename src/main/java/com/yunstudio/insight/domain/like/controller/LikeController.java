@@ -25,9 +25,9 @@ public class LikeController {
      * 답변 좋아요
      */
     @PostMapping
-    public CommonResponse<CommonEmptyRes> likeUp(@LoginUser User user, @PathVariable Long answerId) {
+    public CommonResponse<CommonEmptyRes> like(@LoginUser User user, @PathVariable Long answerId) {
 
-        CommonEmptyRes response = likeService.likeUp(user, answerId);
+        CommonEmptyRes response = likeService.like(user, answerId);
 
         return CommonResponse.success(response);
     }
