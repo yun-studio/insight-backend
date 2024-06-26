@@ -7,6 +7,7 @@ import com.yunstudio.insight.global.response.CommonResponse;
 import com.yunstudio.insight.global.security.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,17 @@ public class LikeController {
     public CommonResponse<CommonEmptyRes> likeUp(@LoginUser User user, @PathVariable Long answerId) {
 
         CommonEmptyRes response = likeService.likeUp(user, answerId);
+
+        return CommonResponse.success(response);
+    }
+
+    /**
+     * 답변 좋아요 취소
+     */
+    @DeleteMapping
+    public CommonResponse<CommonEmptyRes> dislike(@LoginUser User user, @PathVariable Long answerId) {
+
+        CommonEmptyRes response = likeService.dislike(user, answerId);
 
         return CommonResponse.success(response);
     }
