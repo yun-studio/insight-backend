@@ -5,6 +5,8 @@ import com.yunstudio.insight.domain.answer.dto.response.CreateAnswerRes;
 import com.yunstudio.insight.domain.answer.entity.Answer;
 import com.yunstudio.insight.domain.answer.mapper.AnswerMapper;
 import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
+import com.yunstudio.insight.domain.question.entity.Question;
+import com.yunstudio.insight.domain.question.repository.QuestionRepository;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.global.exception.GlobalException;
 import com.yunstudio.insight.global.response.CommonEmptyRes;
@@ -46,10 +48,17 @@ public class AnswerService {
      * 답변 삭제.
      */
     @Transactional
-    public CommonEmptyRes deleteAnswer(User user, Long id) {
-        Answer answer = answerRepository.findByIdWithAuthor(id)
+    public CommonEmptyRes deleteAnswer(User user, Long questionId, Long id) {
+        
+        Answer answer = answerRepository.findById(id)
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
 
+        // 답변이 요청한 질문 안에 있는지 체크
+        if (!isAnswerInQuestion(questionId, answer)) {
+            throw new GlobalException(ResultCase.NOT_AUTHORIZED);
+        }
+
+        // 답변 작성자가 로그인 유저인지 체크
         if (!isUserAuthor(user, answer)) {
             throw new GlobalException(ResultCase.NOT_AUTHORIZED);
         }
@@ -57,6 +66,10 @@ public class AnswerService {
         answerRepository.delete(answer);
 
         return new CommonEmptyRes();
+    }
+
+    private boolean isAnswerInQuestion(Long questionId, Answer answer) {
+        return answer.getQuestion().getId().equals(questionId);
     }
 
     private boolean isUserAuthor(User user, Answer answer) {
