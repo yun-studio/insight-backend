@@ -43,7 +43,10 @@ public enum ResultCase {
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, 3000, "질문을 찾을 수 없습니다."),
 
     // Answer 4000번대
-    ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, 4000, "답변을 찾을 수 없습니다.");
+    ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, 4000, "답변을 찾을 수 없습니다."),
+
+    // Like 5000번대
+    SELF_LIKE_NOT_ALLOWED(HttpStatus.FORBIDDEN, 5000, "자신이 적은 답변을 좋아요 할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
