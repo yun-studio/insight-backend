@@ -1,6 +1,9 @@
 package com.yunstudio.insight.domain.answer.service;
 
+import com.yunstudio.insight.domain.answer.dto.request.CreateAnswerReq;
+import com.yunstudio.insight.domain.answer.dto.response.CreateAnswerRes;
 import com.yunstudio.insight.domain.answer.entity.Answer;
+import com.yunstudio.insight.domain.answer.mapper.AnswerMapper;
 import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.global.exception.GlobalException;
@@ -17,6 +20,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
+
+    /**
+     * 답변 생성.
+     */
+    @Transactional
+    public CreateAnswerRes createAnswer(User user, CreateAnswerReq request) {
+        Answer answer = Answer.builder()
+            .author(user)
+            .content(request.content())
+            .build();
+
+        Answer savedAnswer = answerRepository.save(answer);
+
+        return AnswerMapper.INSTANCE.toCreateAnswerRes(savedAnswer);
+    }
 
     /**
      * 답변 삭제.
