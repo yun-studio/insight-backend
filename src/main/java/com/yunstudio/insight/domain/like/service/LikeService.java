@@ -3,6 +3,7 @@ package com.yunstudio.insight.domain.like.service;
 import com.yunstudio.insight.domain.answer.entity.Answer;
 import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
 import com.yunstudio.insight.domain.like.entity.Like;
+import com.yunstudio.insight.domain.like.entity.LikeId;
 import com.yunstudio.insight.domain.like.repository.LikeRepository;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.global.exception.GlobalException;
@@ -31,7 +32,7 @@ public class LikeService {
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
 
         // 이미 좋아요를 눌렀으면 조기 반환
-        boolean existsLike = likeRepository.existsByUserAndAnswer(user, answer);
+        boolean existsLike = likeRepository.existsById(new LikeId(user, answer));
 
         if (existsLike) {
             return new CommonEmptyRes();
@@ -66,7 +67,7 @@ public class LikeService {
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
 
         // 좋아요를 눌렀다면 삭제
-        likeRepository.findByUserAndAnswer(user, answer)
+        likeRepository.findById(new LikeId(user, answer))
             .ifPresent(likeRepository::delete);
 
         return new CommonEmptyRes();
