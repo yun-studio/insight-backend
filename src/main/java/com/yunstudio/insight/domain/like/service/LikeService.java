@@ -30,6 +30,14 @@ public class LikeService {
         Answer answer = answerRepository.findById(answerId)
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
 
+        // 이미 좋아요를 눌렀으면 조기 반환
+        boolean existsLike = likeRepository.existsByUserAndAnswer(user, answer);
+
+        if (existsLike) {
+            return new CommonEmptyRes();
+        }
+
+        // 본인이 작성한 답변에는 좋아요 불가
         if (isUserSameAuthor(user, answer)) {
             throw new GlobalException(ResultCase.SELF_LIKE_NOT_ALLOWED);
         }
