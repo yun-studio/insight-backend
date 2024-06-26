@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/answers")
+@RequestMapping("/questions/{questionId}/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
@@ -28,9 +28,12 @@ public class AnswerController {
      * 답변 생성.
      */
     @PostMapping
-    public CommonResponse<CreateAnswerRes> createAnswer(@LoginUser User user, @RequestBody CreateAnswerReq request) {
+    public CommonResponse<CreateAnswerRes> createAnswer(
+        @LoginUser User user,
+        @PathVariable Long questionId,
+        @RequestBody CreateAnswerReq request) {
 
-        CreateAnswerRes response = answerService.createAnswer(user, request);
+        CreateAnswerRes response = answerService.createAnswer(user, questionId, request);
 
         return CommonResponse.success(response);
     }
@@ -39,9 +42,12 @@ public class AnswerController {
      * 답변 삭제.
      */
     @DeleteMapping("/{id}")
-    public CommonResponse<CommonEmptyRes> deleteAnswer(@LoginUser User user, @PathVariable Long id) {
+    public CommonResponse<CommonEmptyRes> deleteAnswer(
+        @LoginUser User user,
+        @PathVariable Long questionId,
+        @PathVariable Long id) {
 
-        CommonEmptyRes response = answerService.deleteAnswer(user, id);
+        CommonEmptyRes response = answerService.deleteAnswer(user, questionId, id);
 
         return CommonResponse.success(response);
     }
