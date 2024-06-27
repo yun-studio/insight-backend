@@ -42,7 +42,7 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
         return new SliceImpl<>(query.fetch());
     }
 
-    private OrderSpecifier createOrderSpecifier(Sort.Order order) {
+    private OrderSpecifier<?> createOrderSpecifier(Sort.Order order) {
         String sortType = order.getProperty();
         Order orderDirection = order.isAscending() ? Order.ASC : Order.DESC;
 
