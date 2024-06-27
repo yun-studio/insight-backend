@@ -44,7 +44,7 @@ public class QuestionService {
         Question question = questionRepository.findByIdWithPessimisticLock(id)
             .orElseThrow(() -> new GlobalException(ResultCase.QUESTION_NOT_FOUND));
 
-        Slice<Answer> answerList = answerRepository.findByQuestion(question, pageable);
+        Slice<Answer> answerList = answerRepository.findAllByQuestionPaging(id, pageable);
 
         question.upViews(); // 조회수 증가
         Question savedQuestion = questionRepository.save(question);
