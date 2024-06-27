@@ -3,13 +3,13 @@ package com.yunstudio.insight.domain.question.dto.response;
 import com.querydsl.core.annotations.QueryProjection;
 import com.yunstudio.insight.domain.answer.dto.response.GetAnswerRes;
 import java.time.LocalDateTime;
-import java.util.List;
+import org.springframework.data.domain.Slice;
 
 public record GetQuestionRes(
     Long id,
     String content,
     Long views,
-    List<GetAnswerRes> answerList,
+    Slice<GetAnswerRes> answerList,
     LocalDateTime createdAt,
     LocalDateTime modifiedAt
 ) {
