@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface QuestionRepository extends JpaRepository<Question, Long>, QuestionRepositoryCustom {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query(value = "select q from Question q join fetch q.answerList a where q.id = :id")
+    @Query(value = "select q from Question q where q.id = :id")
     Optional<Question> findByIdWithPessimisticLock(Long id);
 }
