@@ -40,8 +40,8 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public CommonResponse<GetQuestionRes> getQuestion(@PathVariable Long id) {
-        GetQuestionRes response = questionService.getQuestion(id);
+    public CommonResponse<GetQuestionRes> getQuestion(@PathVariable Long id, Pageable pageable) {
+        GetQuestionRes response = questionService.getQuestion(id, pageable);
 
         return CommonResponse.success(response);
     }
