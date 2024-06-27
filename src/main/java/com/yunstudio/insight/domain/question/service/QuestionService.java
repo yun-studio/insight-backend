@@ -1,5 +1,7 @@
 package com.yunstudio.insight.domain.question.service;
 
+import com.yunstudio.insight.domain.answer.entity.Answer;
+import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
 import com.yunstudio.insight.domain.question.dto.request.CreateQuestionReq;
 import com.yunstudio.insight.domain.question.dto.response.GetQuestionRes;
 import com.yunstudio.insight.domain.question.dto.response.GetQuestionsRes;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     /**
      * 질문 목록 조회.
@@ -37,14 +40,16 @@ public class QuestionService {
      * 질문 단건 조회. 조회수 증가 처리 필요.
      */
     @Transactional
-    public GetQuestionRes getQuestion(Long id) {
+    public GetQuestionRes getQuestion(Long id, Pageable pageable) {
         Question question = questionRepository.findByIdWithPessimisticLock(id)
             .orElseThrow(() -> new GlobalException(ResultCase.QUESTION_NOT_FOUND));
+
+        Slice<Answer> answerList = answerRepository.findByQuestion(question, pageable);
 
         question.upViews(); // 조회수 증가
         Question savedQuestion = questionRepository.save(question);
 
-        return QuestionMapper.INSTANCE.toGetQuestionRes(savedQuestion);
+        return QuestionMapper.INSTANCE.toGetQuestionRes(savedQuestion, answerList);
     }
 
     /**
