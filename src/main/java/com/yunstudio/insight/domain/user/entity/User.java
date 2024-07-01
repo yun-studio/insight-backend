@@ -24,11 +24,13 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends SoftDeleteEntity {
 
+    public static final int MAX_NICKNAME_LENGTH = 12;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nickname", nullable = false, unique = true, length = 25) // 구글 이름 최대 글자는 25
+    @Column(name = "nickname", nullable = false, unique = true, length = MAX_NICKNAME_LENGTH) // 구글 이름 최대 글자는 25
     private String nickname;
 
     @Column(name = "email", nullable = false, unique = true, length = 100)
