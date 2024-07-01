@@ -48,6 +48,8 @@ public class GoogleOAuth2UserService extends DefaultOAuth2UserService {
         String nickname = oAuth2User.getAttribute("name");
         String profileUrl = oAuth2User.getAttribute("picture");
 
+        nickname = getAvailableNickname(nickname);
+
         return userRepository.save(
             User.builder()
                 .email(email)
@@ -57,5 +59,25 @@ public class GoogleOAuth2UserService extends DefaultOAuth2UserService {
                 .password(UUID.randomUUID().toString().replace("-", ""))
                 .profileUrl(profileUrl)
                 .build());
+    }
+
+    private String getAvailableNickname(String nickname) {
+        if (!isNicknameAvailable(nickname)) {
+            nickname = createRandomNickname();
+        }
+
+        while (userRepository.existsByNickname(nickname)) {
+            nickname = createRandomNickname();
+        }
+        
+        return nickname;
+    }
+
+    private boolean isNicknameAvailable(String nickname) {
+        return nickname != null && !nickname.isBlank() && nickname.length() <= User.MAX_NICKNAME_LENGTH;
+    }
+
+    private String createRandomNickname() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, User.MAX_NICKNAME_LENGTH);
     }
 }
