@@ -8,7 +8,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -23,11 +22,9 @@ public class DeleteRefreshTokenAop {
     private final HttpServletResponse response;
 
     @AfterReturning(value = "@annotation(com.yunstudio.insight.domain.user.aop.annotation.DeleteRefreshTokenInRedis)", returning = "result")
-    public Object softDeleteUser(JoinPoint joinPoint, Object result) {
+    public UserDeleteRes softDeleteUser(UserDeleteRes result) {
 
-        // 응답 객체 변환
-        UserDeleteRes res = (UserDeleteRes) result;
-        String softDeletedNickname = res.nickname();
+        String softDeletedNickname = result.nickname();
         log.info("softDeletedNickname : {}", softDeletedNickname);
 
         // 리프레쉬 토큰 쿠키 삭제

@@ -8,7 +8,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -24,14 +23,11 @@ public class ChangeRefreshTokenAop {
     private final HttpServletResponse response;
 
     @AfterReturning(value = "@annotation(com.yunstudio.insight.domain.user.aop.annotation.ChangeRefreshTokenInRedis)", returning = "result")
-    public Object changeNickname(JoinPoint joinPoint, Object result) {
-
-        // 응답 객체 변환
-        UserChangeNicknameRes userChangeNicknameRes = (UserChangeNicknameRes) result;
+    public UserChangeNicknameRes changeNickname(UserChangeNicknameRes result) {
 
         // 변경 전후 닉네임
-        String oldNickname = userChangeNicknameRes.oldNickname();
-        String newNickname = userChangeNicknameRes.newNickname();
+        String oldNickname = result.oldNickname();
+        String newNickname = result.newNickname();
 
         log.info("변경 전 닉네임 : {}", oldNickname);
         log.info("변경 후 닉네임 : {}", newNickname);
