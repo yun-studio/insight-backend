@@ -1,8 +1,8 @@
-package com.yunstudio.insight.domain.answer.controller;
+package com.yunstudio.insight.domain.answer.presentation;
 
+import com.yunstudio.insight.domain.answer.business.AnswerService;
 import com.yunstudio.insight.domain.answer.dto.request.CreateAnswerReq;
 import com.yunstudio.insight.domain.answer.dto.response.CreateAnswerRes;
-import com.yunstudio.insight.domain.answer.service.AnswerService;
 import com.yunstudio.insight.domain.user.entity.User;
 import com.yunstudio.insight.global.response.CommonEmptyRes;
 import com.yunstudio.insight.global.response.CommonResponse;
@@ -31,7 +31,8 @@ public class AnswerController {
     public CommonResponse<CreateAnswerRes> createAnswer(
         @LoginUser User user,
         @PathVariable Long questionId,
-        @RequestBody CreateAnswerReq request) {
+        @RequestBody CreateAnswerReq request
+    ) {
 
         CreateAnswerRes response = answerService.createAnswer(user, questionId, request);
 
@@ -45,7 +46,8 @@ public class AnswerController {
     public CommonResponse<CommonEmptyRes> deleteAnswer(
         @LoginUser User user,
         @PathVariable Long questionId,
-        @PathVariable Long id) {
+        @PathVariable Long id
+    ) {
 
         CommonEmptyRes response = answerService.deleteAnswer(user, questionId, id);
 

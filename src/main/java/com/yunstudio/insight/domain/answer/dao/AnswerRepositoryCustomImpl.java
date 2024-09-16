@@ -1,4 +1,4 @@
-package com.yunstudio.insight.domain.answer.repository;
+package com.yunstudio.insight.domain.answer.dao;
 
 import static com.yunstudio.insight.domain.answer.entity.QAnswer.answer;
 import static com.yunstudio.insight.domain.like.entity.QLike.like;

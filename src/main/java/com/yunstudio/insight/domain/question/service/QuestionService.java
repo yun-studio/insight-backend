@@ -1,7 +1,7 @@
 package com.yunstudio.insight.domain.question.service;
 
+import com.yunstudio.insight.domain.answer.dao.AnswerRepository;
 import com.yunstudio.insight.domain.answer.entity.Answer;
-import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
 import com.yunstudio.insight.domain.question.dto.request.CreateQuestionReq;
 import com.yunstudio.insight.domain.question.dto.response.GetQuestionRes;
 import com.yunstudio.insight.domain.question.dto.response.GetQuestionsRes;
