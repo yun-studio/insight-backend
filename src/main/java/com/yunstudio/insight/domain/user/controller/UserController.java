@@ -30,7 +30,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
+    private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
     private final UserService userService;
+
+    @GetMapping()
+    public User getMe(@LoginUser User user) {
+        return user;
+    }
+
+    @GetMapping("/dummy")
+    public CommonResponse<Object> dummy(HttpServletResponse response) {
+        String refreshToken = jwtUtil.createRefreshToken("monkey", UserRole.USER.getAuthority());
+        String accessToken = jwtUtil.setTokenWithBearer(jwtUtil.createAccessToken("monkey", UserRole.USER.getAuthority()));
+
+        Cookie cookie = jwtUtil.createRefreshTokenCookie(refreshToken);
+
+        response.addCookie(cookie);
+        response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, accessToken);
+
+        redisUtil.setUserLogin("monkey", refreshToken);
+
+        return CommonResponse.success();
+    }
 
     @GetMapping("/answers")
     public CommonResponse<List<UserAnswerRes>> getMyAnswers(@LoginUser User user) {

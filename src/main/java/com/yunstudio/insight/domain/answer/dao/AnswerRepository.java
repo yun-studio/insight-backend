@@ -1,4 +1,4 @@
-package com.yunstudio.insight.domain.answer.repository;
+package com.yunstudio.insight.domain.answer.dao;
 
 import com.yunstudio.insight.domain.answer.entity.Answer;
 import com.yunstudio.insight.domain.question.entity.Question;

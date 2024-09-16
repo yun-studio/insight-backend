@@ -1,7 +1,7 @@
 package com.yunstudio.insight.domain.like.service;
 
+import com.yunstudio.insight.domain.answer.dao.AnswerRepository;
 import com.yunstudio.insight.domain.answer.entity.Answer;
-import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
 import com.yunstudio.insight.domain.like.entity.Like;
 import com.yunstudio.insight.domain.like.entity.LikeId;
 import com.yunstudio.insight.domain.like.repository.LikeRepository;

@@ -1,6 +1,6 @@
 package com.yunstudio.insight.domain.user.service;
 
-import com.yunstudio.insight.domain.answer.repository.AnswerRepository;
+import com.yunstudio.insight.domain.answer.dao.AnswerRepository;
 import com.yunstudio.insight.domain.user.aop.annotation.ChangeRefreshTokenInRedis;
 import com.yunstudio.insight.domain.user.aop.annotation.DeleteRefreshTokenInRedis;
 import com.yunstudio.insight.domain.user.dto.response.UserAnswerRes;

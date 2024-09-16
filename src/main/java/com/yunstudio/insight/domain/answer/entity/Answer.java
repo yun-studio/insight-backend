@@ -53,4 +53,14 @@ public class Answer extends SoftDeleteEntity {
         this.author = author;
         this.question = question;
     }
+
+    public static Answer create(String content, User author, Question question) {
+        Answer answer = new Answer();
+
+        answer.content = content;
+        answer.author = author;
+        answer.question = question;
+
+        return answer;
+    }
 }
