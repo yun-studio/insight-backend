@@ -1,6 +1,7 @@
 package com.yunstudio.insight.domain.answer.presentation;
 
-import com.yunstudio.insight.domain.answer.business.AnswerService;
+import com.yunstudio.insight.domain.answer.business.AnswerCreateService;
+import com.yunstudio.insight.domain.answer.business.AnswerDeleteService;
 import com.yunstudio.insight.domain.answer.dto.request.CreateAnswerReq;
 import com.yunstudio.insight.domain.answer.dto.response.CreateAnswerRes;
 import com.yunstudio.insight.domain.user.entity.User;
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/questions/{questionId}/answers")
 public class AnswerController {
 
-    private final AnswerService answerService;
+    private final AnswerCreateService answerCreateService;
+    private final AnswerDeleteService answerDeleteService;
 
     /**
      * 답변 생성.
@@ -34,7 +36,7 @@ public class AnswerController {
         @RequestBody CreateAnswerReq request
     ) {
 
-        CreateAnswerRes response = answerService.createAnswer(user, questionId, request);
+        CreateAnswerRes response = answerCreateService.createAnswer(user, questionId, request);
 
         return CommonResponse.success(response);
     }
@@ -49,7 +51,7 @@ public class AnswerController {
         @PathVariable Long id
     ) {
 
-        CommonEmptyRes response = answerService.deleteAnswer(user, questionId, id);
+        CommonEmptyRes response = answerDeleteService.deleteAnswer(user, questionId, id);
 
         return CommonResponse.success(response);
     }
