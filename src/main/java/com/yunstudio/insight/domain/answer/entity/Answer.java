@@ -18,7 +18,6 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,13 +45,6 @@ public class Answer extends SoftDeleteEntity {
 
     @OneToMany(mappedBy = "answer")
     private List<Like> likeList = new ArrayList<>();
-
-    @Builder
-    private Answer(String content, User author, Question question) {
-        this.content = content;
-        this.author = author;
-        this.question = question;
-    }
 
     public static Answer create(String content, User author, Question question) {
         Answer answer = new Answer();
