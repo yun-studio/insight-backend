@@ -1,0 +1,23 @@
+services:
+
+  postgres:
+    image: 'postgres:16.4'
+    environment:
+      - 'POSTGRES_DB=insight'
+      - 'POSTGRES_PASSWORD=1234'
+      - 'POSTGRES_USER=insight'
+    ports:
+      - '54324:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "63794:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
