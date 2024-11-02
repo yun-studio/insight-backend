@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:54324/insight
+    username: insight
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true # sql 로깅
+        #        generate_statistics: true # 쿼리수행 통계
+        #        format_sql: true # SQL 문 정렬하여 출력
+        highlight_sql: true # SQL 문 색 부여
+        default_batch_fetch_size: 1000
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
+            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+  data:
+    redis:
+      host: localhost
+      port: 63794
+      username: default
+      password:
+  docker:
+    compose:
+      lifecycle-management: start_only # start_only, start_and_stop 옵션이 있으며, 스프링 종료 시 컨테이너 종료 여부를 결정할 수 있음
+      start:
+        command: up
+      stop:
+        command: down
+        timeout: 1m
+
+jwt:
+  secret:
+    key: aGVsbG9uaWNldG9tZWV0eW91amlnb29teW5hbWVpc3NwcmluZ2Jvb3Rnb29kbW9ybmluZ2dvb2RhZnRlcm5vb21nb29kZXZlbmluZ2dvb2RuaWdodA==
