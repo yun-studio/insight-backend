@@ -1,24 +1,31 @@
 services:
 
-  postgres:
-    image: 'postgres:16.4'
-    command: postgres -c 'max_connections=200' # 기본 설정은 100 이나, 200까지 확장
+  mysql:
+    image: 'mysql:8.0.41'
     environment:
-      - 'POSTGRES_DB=insight'
-      - 'POSTGRES_PASSWORD=1234'
-      - 'POSTGRES_USER=insight'
+      - 'MYSQL_DATABASE=insight'
+      - 'MYSQL_PASSWORD=1234'
+      - 'MYSQL_ROOT_PASSWORD=1234'
+      - 'MYSQL_USER=insight'
     ports:
-      - '54324:5432'
+      - '33064:3306'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_insight_data:/var/lib/mysql
+    networks:
+      - insight_network
 
   redis:
     image: redis:alpine
     ports:
       - "63794:6379"
     volumes:
-      - redis_data:/data
+      - redis_insight_data:/data
+    networks:
+      - insight_network
 
 volumes:
-  postgres_data:
-  redis_data:
+  mysql_insight_data:
+  redis_insight_data:
+
+networks:
+  insight_network:
