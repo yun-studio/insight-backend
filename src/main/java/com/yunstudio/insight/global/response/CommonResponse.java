@@ -23,22 +23,21 @@ public class CommonResponse<T> implements Serializable {
     /**
      * data 필드에 값을 넣을 때 사용하는 메서드 - data 필드가 필요 없는 경우
      */
-    public static CommonResponse<Object> success() {
-        return CommonResponse.builder()
-            .status(ResultCase.SUCCESS.getHttpStatus())
-            .code(ResultCase.SUCCESS.getCode())
-            .message(ResultCase.SUCCESS.getMessage())
-            .data(new EmptyResponseDto())
-            .build();
+    public static CommonResponse<CommonEmptyRes> success() {
+        return getSuccessRes(new CommonEmptyRes());
     }
 
     /**
      * data 필드에 값을 넣을 때 사용하는 메서드 - data 필드가 필요한 경우
      */
     public static <T> CommonResponse<T> success(T data) {
+        return getSuccessRes(data);
+    }
+
+    private static <T> CommonResponse<T> getSuccessRes(T data) {
         return CommonResponse.<T>builder()
+            .code(0)
             .status(ResultCase.SUCCESS.getHttpStatus())
-            .code(ResultCase.SUCCESS.getCode())
             .message(ResultCase.SUCCESS.getMessage())
             .data(data)
             .build();
