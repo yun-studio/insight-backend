@@ -131,6 +131,7 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // 유저 도메인
                 .requestMatchers("/login/oauth2/code/google").permitAll() // 구글 로그인 및 회원가입
+                .requestMatchers("/users/signup").permitAll() // 회원가입
                 .requestMatchers(HttpMethod.POST, "/users/logout").authenticated() // 로그아웃
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/users/dummy").permitAll()
