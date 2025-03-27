@@ -1,8 +1,6 @@
 package com.yunstudio.insight.domain.user.service;
 
 import com.yunstudio.insight.domain.answer.dao.AnswerRepository;
-import com.yunstudio.insight.domain.user.aop.annotation.ChangeRefreshTokenInRedis;
-import com.yunstudio.insight.domain.user.aop.annotation.DeleteRefreshTokenInRedis;
 import com.yunstudio.insight.domain.user.dto.response.UserAnswerRes;
 import com.yunstudio.insight.domain.user.dto.response.UserChangeNicknameRes;
 import com.yunstudio.insight.domain.user.dto.response.UserDeleteRes;
@@ -35,7 +33,6 @@ public class UserService {
     }
 
     @Transactional
-    @ChangeRefreshTokenInRedis
     public UserChangeNicknameRes changeNickname(User user, String newNickname) {
 
         // 변경 전 닉네임
@@ -60,7 +57,6 @@ public class UserService {
     }
 
     @Transactional
-    @DeleteRefreshTokenInRedis
     public UserDeleteRes deleteUser(User user) {
 
         // 소프트 딜리트
