@@ -32,7 +32,7 @@ public class LikeService {
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
 
         // 이미 좋아요를 눌렀으면 조기 반환
-        boolean existsLike = likeRepository.existsById(new LikeId(user, answer));
+        boolean existsLike = likeRepository.existsById(LikeId.of(user, answer));
 
         if (existsLike) {
             return new CommonEmptyRes();
@@ -43,10 +43,7 @@ public class LikeService {
             throw new GlobalException(ResultCase.SELF_LIKE_NOT_ALLOWED);
         }
 
-        Like like = Like.builder()
-            .user(user)
-            .answer(answer)
-            .build();
+        Like like = Like.create(user, answer);
 
         likeRepository.save(like);
 
@@ -67,7 +64,7 @@ public class LikeService {
             .orElseThrow(() -> new GlobalException(ResultCase.ANSWER_NOT_FOUND));
 
         // 좋아요를 눌렀다면 삭제
-        likeRepository.findById(new LikeId(user, answer))
+        likeRepository.findById(LikeId.of(user, answer))
             .ifPresent(likeRepository::delete);
 
         return new CommonEmptyRes();

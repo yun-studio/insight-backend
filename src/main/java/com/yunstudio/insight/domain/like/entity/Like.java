@@ -38,7 +38,7 @@ public class Like extends BaseEntity {
 
         like.user = user;
         like.answer = answer;
-        like.id = new LikeId(user, answer);
+        like.id = LikeId.of(user, answer);
 
         return like;
     }
