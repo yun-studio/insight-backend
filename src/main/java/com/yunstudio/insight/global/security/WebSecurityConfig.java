@@ -1,6 +1,7 @@
 package com.yunstudio.insight.global.security;
 
-import com.yunstudio.insight.domain.user.service.GoogleOAuth2UserService;
+//import com.yunstudio.insight.domain.user.service.GoogleOAuth2UserService;
+
 import com.yunstudio.insight.global.exception.ExceptionHandlerFilter;
 import com.yunstudio.insight.global.jwt.JwtAuthFilter;
 import com.yunstudio.insight.global.jwt.JwtUtil;
@@ -18,7 +19,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,7 +38,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final UserDetailsService userDetailsService;
-    private final GoogleOAuth2UserService googleOAuth2UserService;
+    //    private final GoogleOAuth2UserService googleOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final LogoutHandler logoutHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
@@ -75,8 +75,8 @@ public class WebSecurityConfig {
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // OAuth2 Login 설정
-        http.oauth2Login(getoAuth2LoginConfigurerCustomizer());
+//        // OAuth2 Login 설정
+//        http.oauth2Login(getoAuth2LoginConfigurerCustomizer());
 
         // Filter 순서 설정
         settingFilterOrder(http);
@@ -104,14 +104,14 @@ public class WebSecurityConfig {
         });
     }
 
-    /**
-     * OAuth2 Login 설정
-     */
-    private Customizer<OAuth2LoginConfigurer<HttpSecurity>> getoAuth2LoginConfigurerCustomizer() {
-        return oAuth2LoginConfig -> oAuth2LoginConfig
-            .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(googleOAuth2UserService))
-            .successHandler(oAuth2SuccessHandler);
-    }
+//    /**
+//     * OAuth2 Login 설정
+//     */
+//    private Customizer<OAuth2LoginConfigurer<HttpSecurity>> getoAuth2LoginConfigurerCustomizer() {
+//        return oAuth2LoginConfig -> oAuth2LoginConfig
+//            .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(googleOAuth2UserService))
+//            .successHandler(oAuth2SuccessHandler);
+//    }
 
     /**
      * Filter 설정
