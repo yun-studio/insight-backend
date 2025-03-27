@@ -1,4 +1,4 @@
-package com.yunstudio.insight.global.config;
+package com.yunstudio.insight.global.querydsl;
 
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
