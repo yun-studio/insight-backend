@@ -35,6 +35,9 @@ public class Answer extends SoftDeleteEntity {
     @Column(name = "content", nullable = false, length = 65535)
     private String content;
 
+    @Column(name = "is_confirmed")
+    private Boolean isConfirmed;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private User author;
@@ -52,6 +55,7 @@ public class Answer extends SoftDeleteEntity {
         answer.content = content;
         answer.author = author;
         answer.question = question;
+        answer.isConfirmed = false;
 
         return answer;
     }

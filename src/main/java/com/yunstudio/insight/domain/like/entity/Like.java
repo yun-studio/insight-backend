@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,10 +33,13 @@ public class Like extends BaseEntity {
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
-    @Builder
-    private Like(User user, Answer answer) {
-        this.user = user;
-        this.answer = answer;
-        this.id = new LikeId(user, answer);
+    public static Like create(User user, Answer answer) {
+        Like like = new Like();
+
+        like.user = user;
+        like.answer = answer;
+        like.id = new LikeId(user, answer);
+
+        return like;
     }
 }

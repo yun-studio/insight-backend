@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,14 +34,21 @@ public class Question extends BaseEntity {
     @Column(name = "creator_id")
     private Long creatorId; // userId가 들어가지만, 연관관계는 없음.
 
+    @Column(name = "is_confirmed")
+    private Boolean isConfirmed;
+
     @OneToMany(mappedBy = "question")
     private List<Answer> answerList = new ArrayList<>();
 
-    @Builder
-    private Question(String content, Long creatorId) {
-        this.content = content;
-        this.views = 0L;
-        this.creatorId = creatorId;
+    public static Question create(String content, Long creatorId) {
+        Question question = new Question();
+
+        question.content = content;
+        question.views = 0L;
+        question.creatorId = creatorId;
+        question.isConfirmed = false;
+
+        return question;
     }
 
     /**

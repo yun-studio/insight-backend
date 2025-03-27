@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -43,25 +42,15 @@ public class User extends SoftDeleteEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "provider")
-    @Enumerated(EnumType.STRING)
-    private OAuthProvider provider;
+    public static User create(String nickname, String email, String password) {
+        User user = new User();
 
-    @Column(name = "provider_id")
-    private String providerId;
+        user.nickname = nickname;
+        user.email = email;
+        user.password = password;
+        user.role = UserRole.USER;
 
-    @Column(name = "profile_url")
-    private String profileUrl;
-
-    @Builder
-    private User(String nickname, String email, String password, OAuthProvider provider, String providerId, String profileUrl) {
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
-        this.role = UserRole.USER;
-        this.provider = provider;
-        this.providerId = providerId;
-        this.profileUrl = profileUrl;
+        return user;
     }
 
     public void changeNickname(String nickname) {
