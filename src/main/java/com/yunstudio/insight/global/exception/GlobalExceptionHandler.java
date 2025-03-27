@@ -2,6 +2,7 @@ package com.yunstudio.insight.global.exception;
 
 import com.yunstudio.insight.global.mapper.InvalidInputMapper;
 import com.yunstudio.insight.global.response.CommonResponse;
+import com.yunstudio.insight.global.response.InvalidInputRes;
 import com.yunstudio.insight.global.response.ResultCase;
 import java.util.List;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.yunstudio.insight.global.exception;
+package com.yunstudio.insight.global.response;
 
 public record InvalidInputRes(String field, String message) {
 

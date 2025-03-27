@@ -1,6 +1,6 @@
 package com.yunstudio.insight.global.mapper;
 
-import com.yunstudio.insight.global.exception.InvalidInputRes;
+import com.yunstudio.insight.global.response.InvalidInputRes;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
