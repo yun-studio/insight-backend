@@ -25,6 +25,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final QuestionMapper mapper;
 
     /**
      * 질문 목록 조회.
@@ -33,7 +34,7 @@ public class QuestionService {
     public Slice<GetQuestionsRes> getQuestions(String query, Pageable pageable) {
 
         return questionRepository.findAllByQueryPaging(query, pageable)
-            .map(QuestionMapper.INSTANCE::toGetQuestionsRes);
+            .map(mapper::toGetQuestionsRes);
     }
 
     /**
@@ -49,7 +50,7 @@ public class QuestionService {
         question.upViews(); // 조회수 증가
         Question savedQuestion = questionRepository.save(question);
 
-        return QuestionMapper.INSTANCE.toGetQuestionRes(savedQuestion, answerList);
+        return mapper.toGetQuestionRes(savedQuestion, answerList);
     }
 
     /**
@@ -57,11 +58,7 @@ public class QuestionService {
      */
     @Transactional
     public CommonEmptyRes createQuestion(Long creatorId, CreateQuestionReq request) {
-        Question question = Question.builder()
-            .creatorId(creatorId)
-            .content(request.content())
-            .build();
-
+        Question question = Question.create((request.content()), creatorId);
         questionRepository.save(question);
 
         return new CommonEmptyRes();

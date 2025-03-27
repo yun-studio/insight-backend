@@ -8,13 +8,11 @@ import com.yunstudio.insight.domain.question.dto.response.GetQuestionsRes;
 import com.yunstudio.insight.domain.question.entity.Question;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.springframework.data.domain.Slice;
 
-@Mapper
+@Mapper(componentModel = ComponentModel.SPRING)
 public interface QuestionMapper {
-
-    QuestionMapper INSTANCE = Mappers.getMapper(QuestionMapper.class);
 
     default GetQuestionRes toGetQuestionRes(Question question, Slice<Answer> answerList) {
         Slice<GetAnswerRes> getAnswerResList = answerList
